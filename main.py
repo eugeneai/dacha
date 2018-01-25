@@ -1,0 +1,32 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from main_window import Ui_MainWindow
+from money_document import MoneyDocumentDialog
+
+
+class ApplicationWindow(QMainWindow):
+    def __init__(self):
+        super(ApplicationWindow, self).__init__()
+        self.ui=Ui_MainWindow()
+        self.ui.setupUi(self)
+
+        self.ui.actionQuit.triggered.connect(self.quit_application)
+        self.ui.actionMoney.triggered.connect(self.add_money_document)
+
+    def quit_application(self, event):
+        app.quit()
+
+    def add_money_document(self, event):
+        doc_dial = MoneyDocumentDialog()
+        rc=doc_dial.exec_()
+        if rc:
+            print("Create Document and save it somwhere")
+
+if __name__ == '__main__':
+
+    app = QApplication(sys.argv)
+
+    w=ApplicationWindow()
+    w.show()
+
+    sys.exit(app.exec_())
