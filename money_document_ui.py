@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/money-document.ui'
 #
-# Created by: PyQt5 UI code generator 5.10
+# Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -22,6 +22,8 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.spinBox = QtWidgets.QSpinBox(Dialog)
+        self.spinBox.setMaximum(999999999)
+        self.spinBox.setProperty("value", 0)
         self.spinBox.setObjectName("spinBox")
         self.horizontalLayout.addWidget(self.spinBox)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -49,5 +51,6 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "Amount"))
+        self.spinBox.setSuffix(_translate("Dialog", " руб."))
         self.accept.setText(_translate("Dialog", "Accept"))
 

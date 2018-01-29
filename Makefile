@@ -1,7 +1,7 @@
 .PHONY: run install upgrade designer uic
 
 PYTHON=python3
-PYUIC=pyuic5.bat
+PYUIC=$(PYTHON) -m PyQt5.uic.pyuic
 
 SRC=main.py  main_window.py  money_document.py  money_document_ui.py
 
