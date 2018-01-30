@@ -2,6 +2,9 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from main_window import Ui_MainWindow
 from money_document import MoneyDocumentDialog
+import os, codecs
+if os.name=='nt':
+    sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
 
 class ApplicationWindow(QMainWindow):
@@ -21,6 +24,7 @@ class ApplicationWindow(QMainWindow):
         rc=doc_dial.exec_()
         if rc:
             print("Create Document and save it somwhere")
+            print("Создать документ")
 
 if __name__ == '__main__':
 
@@ -29,4 +33,7 @@ if __name__ == '__main__':
     w=ApplicationWindow()
     w.show()
 
-    sys.exit(app.exec_())
+    app.exec_()
+    #quit()
+    del w
+    del app

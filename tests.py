@@ -1,3 +1,4 @@
+import nose
 import os, sys, codecs
 if os.name=='nt':
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
@@ -9,3 +10,6 @@ class TestBasic:
         assert True
 
 
+if __name__=="__main__":
+    pass
+    nose.main()

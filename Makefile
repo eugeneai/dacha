@@ -1,6 +1,6 @@
 .PHONY: run install upgrade designer uic
 
-PYTHON=python3
+PYTHON=C:\dacha\py3\python-3.6.3\pythonw.exe -u
 PYUIC=$(PYTHON) -m PyQt5.uic.pyuic
 
 SRC=main.py  main_window.py  money_document.py  money_document_ui.py
