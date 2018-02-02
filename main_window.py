@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main-window.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.10
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -56,4 +56,14 @@ class Ui_MainWindow(object):
         self.actionSomething.setText(_translate("MainWindow", "Something"))
         self.actionQuit.setText(_translate("MainWindow", "Quit"))
         self.actionMoney.setText(_translate("MainWindow", "Money"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 
