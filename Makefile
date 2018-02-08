@@ -1,12 +1,18 @@
-.PHONY: run install upgrade designer uic
+.PHONY: run install upgrade designer uic tests
 
-PYTHON=python -u
+ENV=/home/stud/.pyenv/versions/dacha/bin
+
+PYTHON=$(ENV)/python -u
+NOSE=$(ENV)/nosetests
 PYUIC=$(PYTHON) -m PyQt5.uic.pyuic -x
 
 SRC=main.py  main_window.py  money_document.py  money_document_ui.py
 
 run: $(SRC)
 	$(PYTHON) main.py
+
+tests:
+	$(NOSE) -s .
 
 designer:
 	designer
