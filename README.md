@@ -2,7 +2,7 @@
 
 ## Загрузка образа Arch Linux x86_64.
 
-1. Загрузить образ [виртуального винчестера](https://dnevnikru-my.sharepoint.com/:u:/g/personal/eugeneai_dnevnik_ru/EQTQY1roeLtAmvq0uu5X_8cB8lWLfGXyvznD7D-i78cWGw?e=kQ5AO1).
+1. Загрузить образ [виртуального винчестера](https://dnevnikru-my.sharepoint.com/:u:/g/personal/eugeneai_dnevnik_ru/EQTQY1roeLtAmvq0uu5X_8cB8lWLfGXyvznD7D-i78cWGw?e=kQ5AO1), размер-6.5 Гб!
 2. Создать 64-битовую виртуальную машину [Virtualbox](https://www.virtualbox.org/wiki/Downloads), указав размер оперативной памяти минимум 2 ГБ.
 3. Если Virtualbox не хочет создавать или запускать 64-битовую виртуальную машину, то либо на рабочей станции установлена 32-битовая ОС, либо в BIOS отключен бит поддержки виртуализации.
 
