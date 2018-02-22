@@ -2,4 +2,6 @@ zope.component[zcml]
 zope.i18nmessageid
 pyqt5
 sqlalchemy
+#pystache
+pybars3
 # psycopg2

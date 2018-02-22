@@ -22,7 +22,7 @@ class ApplicationWindow(QMainWindow):
         app.quit()
 
     def add_money_document(self, event):
-        doc = Document(1000)
+        doc = Document(1000, ["Ivanov","Петров","Lee"])
         self.view_for_document(doc)
 
     def view_for_document(self, doc):

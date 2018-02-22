@@ -36,6 +36,9 @@ class Ui_Dialog(object):
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.horizontalLayout_2.addWidget(self.buttonBox)
+        self.buttonPrint = QtWidgets.QPushButton(Dialog)
+        self.buttonPrint.setObjectName("buttonPrint")
+        self.horizontalLayout_2.addWidget(self.buttonPrint)
         self.accept = QtWidgets.QPushButton(Dialog)
         self.accept.setObjectName("accept")
         self.horizontalLayout_2.addWidget(self.accept)
@@ -52,6 +55,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "Amount"))
         self.spinBox.setSuffix(_translate("Dialog", " руб."))
+        self.buttonPrint.setText(_translate("Dialog", "Print"))
         self.accept.setText(_translate("Dialog", "Accept"))
 
 
