@@ -1,5 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Decimal, Date
+import enum
 
 SESSION = None
 ENGINE = None
@@ -31,6 +32,55 @@ class AmountDocument(Base):
     def __init__(self, amount=0, records=[]):
         self.amount = amount
         self.records = records
+
+
+class Units(enum.Enum):
+    litr = 1
+    qube = 2
+    # .....
+
+
+class ServiceType(Base):
+    __tablename__ = 'service_type'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50))
+    unit = Column(Enum(Units))
+
+
+class Service(Base):
+    __tablename__ = 'service'
+
+    id = Column(Integer, primary_key=True)
+    type = relationship("ServiceType", back_populates="services")
+
+
+class FacilityType():
+    __tablename__ = 'facility_type'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50))
+    unit = Column(Enum(Units))
+
+
+class Facility(Base):
+    """Объект: участок, трансорматорна будка...."""
+
+    __tablename__ = 'facility'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50))
+    type = relationship("FacilityType", back_populates="facilities")
+
+
+class Person(Base):
+    """Владелец объекта"""
+
+
+class PaymentDocument(Base):
+    """Оплата услуги или взнос"""
+    date = Date()
+    amount = Decimal(11, 2)
 
 
 def create_session(engine):
