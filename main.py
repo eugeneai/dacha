@@ -2,7 +2,9 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from main_window import Ui_MainWindow
 from money_document import MoneyDocumentView
-from models import AmountDocument, SESSION
+from models import AmountDocument
+import models
+from models import create_debug_engine, create_session, print_session
 import os
 import codecs
 if os.name == 'nt':
@@ -10,15 +12,15 @@ if os.name == 'nt':
 
 
 def register(obj):
-    SESSION.add(obj)
+    models.SESSION.add(obj)
 
 
 def commit():
-    SESSION.commit()
+    models.SESSION.commit()
 
 
 def rollback():
-    SESSION.rollback()
+    models.SESSION.rollback()
 
 
 class ApplicationWindow(QMainWindow):
@@ -51,8 +53,13 @@ class ApplicationWindow(QMainWindow):
 
 if __name__ == '__main__':
 
+    # import pudb
+    #  pu.db
+
     de = create_debug_engine(True)
     create_session(de)
+
+    print(models.SESSION)
 
     app = QApplication(sys.argv)
 

@@ -1,24 +1,19 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Float
 
 SESSION = None
 ENGINE = None
 
 BASE = declarative_base()
 
-
-class Record(BASE):
-    __tablename__ = 'record'
-    id = Column(Integer, primary_key=True)
-
-    def __repr__(self):
-        return "<{}(id='{}')>".format(self.__class__, self.id)
+Base = BASE
 
 
-class Catalog(Record):
+class Catalog(Base):
     """This class represents a base class for catalogs."""
     __tablename__ = 'catalog'
 
+    id = Column(Integer, primary_key=True)
     title = Column(String(50))
 
     def __repr__(self):
@@ -27,13 +22,10 @@ class Catalog(Record):
                                                   self.title)
 
 
-class Document(Record):
-    """A Document"""
-    __tablename__ = 'document'
-
-
-class AmountDocument(Document):
+class AmountDocument(Base):
     __tablename__ = 'amount'
+
+    id = Column(Integer, primary_key=True)
     amount = Column(Float)
 
     def __init__(self, amount=0, records=[]):
@@ -51,11 +43,19 @@ def create_session(engine):
 
 
 def create_debug_engine(echo=False):
-    global ENGINE
+    from sqlalchemy import create_engine
+
+    global ENGINE, BASE
     ENGINE = create_engine('sqlite:///:memory:', echo=echo)
+    BASE.metadata.create_all(ENGINE)
     return ENGINE
 
 
 def create_release_engine(echo=False):
     raise RuntimeError("Not implemented!")
     return ENGINE
+
+
+def print_session():
+    global SESSION
+    print(SESSION)
