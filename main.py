@@ -2,11 +2,23 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from main_window import Ui_MainWindow
 from money_document import MoneyDocumentView
-from models import Document
+from models import AmountDocument, SESSION
 import os
 import codecs
 if os.name == 'nt':
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+
+
+def register(obj):
+    SESSION.add(obj)
+
+
+def commit():
+    SESSION.commit()
+
+
+def rollback():
+    SESSION.rollback()
 
 
 class ApplicationWindow(QMainWindow):
@@ -22,7 +34,8 @@ class ApplicationWindow(QMainWindow):
         app.quit()
 
     def add_money_document(self, event):
-        doc = Document(1000, ["Ivanov","Петров","Lee"])
+        doc = AmountDocument(1000, ["Ivanov", "Петров", "Lee"])
+        register(doc)
         self.view_for_document(doc)
 
     def view_for_document(self, doc):
@@ -38,12 +51,17 @@ class ApplicationWindow(QMainWindow):
 
 if __name__ == '__main__':
 
+    de = create_debug_engine(True)
+    create_session(de)
+
     app = QApplication(sys.argv)
 
     w = ApplicationWindow()
     w.show()
 
     app.exec_()
+
+    commit()
     # quit()
     del w
     del app
