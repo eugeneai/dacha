@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Float, Numeric, Date, Enum
+from sqlalchemy import ForeignKey
 import enum
 
 SESSION = None
@@ -18,52 +19,32 @@ class CatalogMixing(object):
                                                   self.title)
 
 
-class Catalog(Base, CatalogMixing):
-    """This class represents a base class for catalogs."""
-    __tablename__ = 'catalog'
+# class Catalog(Base, CatalogMixing):
+#     """This class represents a base class for catalogs."""
+#     __tablename__ = 'catalog'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String(50))
-
-
-class AmountDocument(Base):
-    __tablename__ = 'amount'
-
-    id = Column(Integer, primary_key=True)
-    amount = Column(Float)
-
-    def __init__(self, amount=0, records=[]):
-        self.amount = amount
-        self.records = records
+#     id = Column(Integer, primary_key=True)
+#     title = Column(String(50))
 
 
 class Units(enum.Enum):
-    litr = 1
-    qube = 2
+    cubic_meter = 1
+    liter = 2
+    hundred = 3
+    kilowatt = 4
     # .....
 
 
-class ServiceType(Base):
-    __tablename__ = 'service_type'
-
-    id = Column(Integer, primary_key=True)
-    title = Column(String(50))
-    unit = Column(Enum(Units))
-
-
-class Service(Base):
-    __tablename__ = 'service'
-
-    id = Column(Integer, primary_key=True)
-    type = relationship("ServiceType", back_populates="services")
-
-
-class FacilityType():
+class FacilityType(Base):
     __tablename__ = 'facility_type'
 
     id = Column(Integer, primary_key=True)
     title = Column(String(50))
     unit = Column(Enum(Units))
+
+    def __init__(self, title, unit):
+        self.title = title
+        self.unit = unit
 
 
 class Facility(Base):
@@ -72,8 +53,12 @@ class Facility(Base):
     __tablename__ = 'facility'
 
     id = Column(Integer, primary_key=True)
+    type_id = Column(Integer, ForeignKey('facility_type.id'))
     title = Column(String(50))
     type = relationship("FacilityType", back_populates="facilities")
+
+
+FacilityType.facilities = relationship("Facility", back_populates="type")
 
 
 class Person(Base, CatalogMixing):
@@ -85,7 +70,7 @@ class Person(Base, CatalogMixing):
         return self.title
 
     def set_title(self, value):
-        self.name = value
+        self.title = value
         return value
 
     name = property(get_title, set_title)
@@ -93,13 +78,35 @@ class Person(Base, CatalogMixing):
     id = Column(Integer, primary_key=True)
     title = Column(String(50))
 
+    def __init__(self, name):
+        self.name = name
 
-class PaymentDocument(Base):
-    __tablename__ = 'payment_document'
-    """Оплата услуги или взнос"""
+
+class Payment(Base):
+    __tablename__ = 'payment'
+    """Факт оплаты услуги или взнос"""
     id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey('person.id'))
+    facility_id = Column(Integer, ForeignKey('facility.id'))
     date = Date()
-    amount = Numeric(11, 2)
+    price = Numeric(11, 2)
+    cost = Numeric(11, 2)
+
+    facilities = relationship("Facility", back_populates="documents")
+    persons = relationship("Person", back_populates="documents")
+
+    def get_quantity(self):
+        assert abs(float(self.price)) < 0.01, "zero price"
+        return self.cost / self.price
+
+    def set_quantity(self, value):
+        self.cost = self.price * value
+
+    quantity = property(get_quantity, set_quantity)
+
+
+Facility.documents = relationship("Payment", back_populates="facilities")
+Person.documents = relationship("Payment", back_populates="persons")
 
 
 def create_session(engine):
