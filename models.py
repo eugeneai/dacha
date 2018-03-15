@@ -1,5 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Float, Decimal, Date
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, Float, Numeric, Date, Enum
 import enum
 
 SESSION = None
@@ -10,17 +11,19 @@ BASE = declarative_base()
 Base = BASE
 
 
-class Catalog(Base):
+class CatalogMixing(object):
+    def __repr__(self):
+        return "<{}(id='{}', title='{}')>".format(self.__class__,
+                                                  self.id,
+                                                  self.title)
+
+
+class Catalog(Base, CatalogMixing):
     """This class represents a base class for catalogs."""
     __tablename__ = 'catalog'
 
     id = Column(Integer, primary_key=True)
     title = Column(String(50))
-
-    def __repr__(self):
-        return "<{}(id='{}', title='{}')>".format(self.__class__,
-                                                  self.id,
-                                                  self.title)
 
 
 class AmountDocument(Base):
@@ -73,14 +76,30 @@ class Facility(Base):
     type = relationship("FacilityType", back_populates="facilities")
 
 
-class Person(Base):
+class Person(Base, CatalogMixing):
     """Владелец объекта"""
+
+    __tablename__ = 'person'
+
+    def get_title(self):
+        return self.title
+
+    def set_title(self, value):
+        self.name = value
+        return value
+
+    name = property(get_title, set_title)
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50))
 
 
 class PaymentDocument(Base):
+    __tablename__ = 'payment_document'
     """Оплата услуги или взнос"""
+    id = Column(Integer, primary_key=True)
     date = Date()
-    amount = Decimal(11, 2)
+    amount = Numeric(11, 2)
 
 
 def create_session(engine):
